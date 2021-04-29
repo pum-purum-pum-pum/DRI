@@ -1,5 +1,5 @@
 [package]
-name = "sapp-kms"
+name = "dri"
 version = "0.1.1"
 authors = ["not-fl3 <not.fl3@gmail.com>"]
 edition = "2018"
@@ -9,7 +9,6 @@ description = """
 Part of miniquad rendering library. 
 Orignally this was a sokol-app C code transpiled to rust with c2rust and partially rewritten to more idiomatic rust.
 """
-homepage = "https://github.com/not-fl3/miniquad"
 
 [dependencies]
 libc = "0.2"
