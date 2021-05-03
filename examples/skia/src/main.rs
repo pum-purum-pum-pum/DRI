@@ -1,13 +1,14 @@
+use std::convert::TryInto;
+use skia_safe::{
+    gpu::{gl::FramebufferInfo, BackendRenderTarget, SurfaceOrigin},
+    ColorType, Surface, Paint, Color, PaintStyle
+};
+
 use dri::kms::{drm_screen_width, drm_screen_height, init, swap_buffers};
 use dri::gl::*;
-use std::convert::TryInto;
 
 fn main() {
     unsafe{init()};
-    use skia_safe::{
-        gpu::{gl::FramebufferInfo, BackendRenderTarget, SurfaceOrigin},
-        ColorType, Surface, Paint, Color, PaintStyle
-    };
 
     let mut gr_context = skia_safe::gpu::Context::new_gl(None, None)
         .expect("failed to create skia gl context");

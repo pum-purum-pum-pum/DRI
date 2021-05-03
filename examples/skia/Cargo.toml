@@ -1,5 +1,5 @@
 [package]
-name = "skia"
+name = "skia_dri"
 version = "0.1.0"
 authors = ["Vlad Zhukov <vlad.zhukov@elektron.se>"]
 edition = "2018"

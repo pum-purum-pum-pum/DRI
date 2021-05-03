@@ -7,6 +7,7 @@ use gbm::*;
 use std::option::Option::None;
 
 use libc::{fd_set, printf, timeval};
+use std::os::unix::io::AsRawFd;
 
 const DISPLAY_FMT: EGLint = 
         ('X' as i32
@@ -259,8 +260,13 @@ unsafe fn find_crtc_for_connector(
     return None;
 }
 
-unsafe fn try_fd(device: &[u8]) -> Option<*mut drmModeRes> {
-    drm.fd = open(device.as_ptr() as *const _, 0o2 as libc::c_int);
+unsafe fn try_fd(device: &str) -> Option<*mut drmModeRes> {
+    use std::fs::File;
+    let device_file = File::open(device).expect("failed to open drm device file");
+    drm.fd = device_file.as_raw_fd();
+    std::mem::forget(device_file);
+    //drm.fd = open(device.as_ptr() as *const _, 0o2 as libc::c_int);
+    //drm.fd = libc::open(device.as_ptr() as *const _, 0o2 as libc::c_int);
     if drm.fd < 0 as libc::c_int {
         println!("could not open drm device");
         return None;
@@ -284,12 +290,12 @@ unsafe fn init_drm() -> libc::c_int {
     let mut i;
     let mut area;
 
-    let mut resources = try_fd(b"/dev/dri/card0\x00");
+    let mut resources = try_fd("/dev/dri/card0");
     if resources.is_none() {
-        resources = try_fd(b"/dev/dri/card1\x00");
+        resources = try_fd("/dev/dri/card1");
     }
     if resources.is_none() {
-        resources = try_fd(b"/dev/dri/card2\x00");
+        resources = try_fd("/dev/dri/card2");
     }
     if resources.is_none() {
         panic!("KMS resources not found in either of /dev/dri/card0, /dev/dri/card1 and /dev/dri/card1");
