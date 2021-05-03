@@ -269,8 +269,6 @@ unsafe fn try_fd(device: &str) -> Option<*mut drmModeRes> {
         .open(device).expect("failed to open drm device file");
     drm.fd = device_file.as_raw_fd();
     std::mem::forget(device_file);
-    //drm.fd = open(device.as_ptr() as *const _, 0o2 as libc::c_int);
-    //drm.fd = libc::open(device.as_ptr() as *const _, 0o2 as libc::c_int);
     if drm.fd < 0 as libc::c_int {
         println!("could not open drm device");
         return None;
@@ -535,7 +533,7 @@ unsafe extern "C" fn init_gl() -> libc::c_int {
         gbm.surface as EGLNativeWindowType,
         0 as *const EGLint,
     );
-    free(configs as *mut libc::c_void);
+    //free(configs as *mut libc::c_void);
     if gl.surface.is_null() {
         println!("failed to create egl surface");
         return -1;
