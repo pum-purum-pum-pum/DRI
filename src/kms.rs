@@ -261,8 +261,12 @@ unsafe fn find_crtc_for_connector(
 }
 
 unsafe fn try_fd(device: &str) -> Option<*mut drmModeRes> {
-    use std::fs::File;
-    let device_file = File::open(device).expect("failed to open drm device file");
+    use std::fs::OpenOptions;
+
+    let device_file = OpenOptions::new()
+        .read(true)
+        .write(true)
+        .open(device).expect("failed to open drm device file");
     drm.fd = device_file.as_raw_fd();
     std::mem::forget(device_file);
     //drm.fd = open(device.as_ptr() as *const _, 0o2 as libc::c_int);
