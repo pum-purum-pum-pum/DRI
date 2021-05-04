@@ -702,10 +702,10 @@ pub unsafe fn init() -> libc::c_int {
     }
     /* clear the color buffer */
     glClearColor(
-        1.0f64 as GLfloat,
-        1.0f64 as GLfloat,
-        0.5f64 as GLfloat,
-        1.0f64 as GLfloat,
+        0.0f64 as GLfloat,
+        0.0f64 as GLfloat,
+        0.0f64 as GLfloat,
+        0.0f64 as GLfloat,
     );
     glClear(0x4000 as libc::c_int as GLbitfield);
     eglSwapBuffers(gl.display, gl.surface);
